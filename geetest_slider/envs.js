@@ -111,10 +111,64 @@ let CanvasRenderingContext2D = {
     fill: function() {return undefined},
 };
 
+const document = {
+    body: "",
+    head: "",
+    nodeType: 9,
+    documentElement: "<html></html>",
+    childNodes: ['<html></html>', "<html></html>"],
+    compatMode: 'CSS1Compat',
+    createElement: function (val) {
+        return '<' + val + '></' + val + '>';
+    },
+    addEventListener: function(type, listener, options) {
+        return undefined;
+    },
+    getElementsByTagName: function () {
+        return document.body;
+    },
+};
+
+const location = {
+    protocol: "https:"
+};
+
+const navigator = {
+    userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36',
+    hardwareConcurrency: 4,
+};
+
+// window = {
+//     document: document,
+//     location: location,
+//     navigator: navigator,
+//     _phantom: undefined,
+//     callPhantom: undefined,
+//     __nightmare: undefined,
+//     addEventListener: function(type, listener, options) {
+//         return undefined;
+//     },
+//     Geetest: function EIRq(e, t) {
+//         var VaA = OOHUe.Dxm()[4][8];
+//         for (; VaA !== OOHUe.Dxm()[0][7]; ) {
+//             switch (VaA) {
+//                 case OOHUe.Dxm()[2][8]:
+//                     return e[jNoZ(187)] || (e[kOgu(187)] = kOgu(166)),
+//                         new EIRq[e[(jNoZ(187))]](e,t);
+//                     break;
+//             }
+//         }
+//     },
+//     screen: {}
+// };
+
 module.exports = {
     canvas,
     window,
     CanvasRenderingContext2D,
     C,
-    Config
+    Config,
+    document,
+    location,
+    navigator,
 };

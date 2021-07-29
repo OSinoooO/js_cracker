@@ -1,3 +1,40 @@
+const envs = require('./envs');
+window = envs.window;
+
+const C = envs.C;
+const Config = envs.Config;
+
+
+window.document = new Proxy(window.document, {
+    get: function (target, prop, receiver) {
+        console.log('【window.document】检测到参数: ', prop, ' -> ', target[prop] ? 'ok': undefined);
+        return target[prop];
+    }
+});
+
+// window = new Proxy(window, {
+//     get: function (target, prop, receiver) {
+//         console.log('【window】检测到参数: ', prop, ' -> ', target[prop] ? 'ok': undefined);
+//         return target[prop];
+//     }
+// });
+//
+// window.location = new Proxy(window.location, {
+//     get: function (target, prop, receiver) {
+//         console.log('【window.location】检测到参数: ', prop, ' -> ', target[prop] ? 'ok': undefined);
+//         return target[prop];
+//     }
+// });
+//
+// window.navigator = new Proxy(window.navigator, {
+//     get: function (target, prop, receiver) {
+//         console.log('【window.navigator】检测到参数: ', prop, ' -> ', target[prop] ? 'ok': undefined);
+//         return target[prop];
+//     }
+// });
+
+
+
 (function () {
     AXzPo.BUI = function () {
         var NNY = 2;
@@ -158,7 +195,8 @@
         return typeof AXzPo.Cee.Yqi === "function" ? AXzPo.Cee.Yqi.apply(AXzPo.Cee, arguments) : AXzPo.Cee.Yqi;
     };
 
-    function AXzPo() {}
+    function AXzPo() {
+    }
 
     !function () {
         AXzPo.DVn(7);
@@ -170,6 +208,7 @@
             ZUysgp.shift();
             var cdPm = ZUysgp[0];
             "use strict";
+            t(e, Config);
 
             if (typeof module === baHw(65) && typeof module[baHw(63)] === aVMl(65)) {
                 module[baHw(63)] = e[baHw(37)] ? t(e, true) : function (e) {
@@ -289,11 +328,13 @@
                             if (typeof s !== kO_a(17) && s[lrii(79)]() && t) {
                                 try {
                                     a(e, r);
-                                } catch (n) {}
+                                } catch (n) {
+                                }
                             } else {
                                 try {
                                     i(e, r);
-                                } catch (n) {}
+                                } catch (n) {
+                                }
                             }
 
                             SXP = AXzPo.Ecs()[4][13];
@@ -576,10 +617,12 @@
                                             rFJruC.shift();
                                             var uHQI = rFJruC[0];
 
-                                            if (e) {}
+                                            if (e) {
+                                            }
                                         });
                                     }
-                                } catch (n) {}
+                                } catch (n) {
+                                }
                             }
 
                             VrG = AXzPo.Ecs()[6][13];
@@ -1635,7 +1678,8 @@
 
                                     try {
                                         delete window[n];
-                                    } catch (t) {}
+                                    } catch (t) {
+                                    }
                                 };
 
                                 a[Ay_V(147)] = n;
@@ -2024,6 +2068,7 @@
                 for (; EjZ !== AXzPo.Ecs()[10][13];) {
                     switch (EjZ) {
                         case AXzPo.Ecs()[8][14]:
+
                         function HoFV(e, t) {
                             var Fpo = AXzPo.Ecs()[0][14];
 
@@ -2516,7 +2561,8 @@
 
                             for (e = 0; e < a[nHXR(67)]; ++e) n[i++] = a[e] & 255;
                         }
-                    } catch (d) {}
+                    } catch (d) {
+                    }
 
                     var o = 0;
 
@@ -2546,7 +2592,8 @@
                                         var t = e[oTgW(259)] + e[nHXR(278)];
                                         n[i++] = t & 255;
                                         o += 1;
-                                    } catch (d) {}
+                                    } catch (d) {
+                                    }
 
                                     WEx = AXzPo.Ecs()[10][13];
                                     break;
@@ -2617,7 +2664,8 @@
                     var ZoQ = AXzPo.Ecs()[4][14];
 
                     for (; ZoQ !== AXzPo.Ecs()[10][14];) {
-                        switch (ZoQ) {}
+                        switch (ZoQ) {
+                        }
                     }
                 }
 
@@ -6691,7 +6739,8 @@
                                 n[hHPX(123)][hHPX(479)] = hHPX(462);
                             }
                         }
-                    } catch (i) {}
+                    } catch (i) {
+                    }
 
                     return t;
                 },
@@ -7263,7 +7312,8 @@
                             var Xgf = AXzPo.Ecs()[8][14];
 
                             for (; Xgf !== AXzPo.Ecs()[10][14];) {
-                                switch (Xgf) {}
+                                switch (Xgf) {
+                                }
                             }
                         }
 
@@ -7375,7 +7425,8 @@
                     var anX = AXzPo.Ecs()[10][14];
 
                     for (; anX !== AXzPo.Ecs()[8][14];) {
-                        switch (anX) {}
+                        switch (anX) {
+                        }
                     }
                 }
 
@@ -7383,7 +7434,8 @@
                     var bbC = AXzPo.Ecs()[2][14];
 
                     for (; bbC !== AXzPo.Ecs()[2][14];) {
-                        switch (bbC) {}
+                        switch (bbC) {
+                        }
                     }
                 }
 
@@ -7391,7 +7443,8 @@
                     var cKE = AXzPo.Ecs()[10][14];
 
                     for (; cKE !== AXzPo.Ecs()[0][14];) {
-                        switch (cKE) {}
+                        switch (cKE) {
+                        }
                     }
                 }
 
@@ -8764,7 +8817,8 @@
                 var JZb = AXzPo.Ecs()[4][14];
 
                 for (; JZb !== AXzPo.Ecs()[4][14];) {
-                    switch (JZb) {}
+                    switch (JZb) {
+                    }
                 }
             }
 
@@ -9989,7 +10043,7 @@
                                     break;
 
                                 case AXzPo.Ecs()[6][12]:
-                                    for (var i = 0, a = n[tXAD(67)]; i < a; i = i + 1) {
+                                    for (var i = 0, a = (n && n[tXAD(67)] || 0); i < a; i = i + 1) {
                                         c(n[i]);
                                     }
 
@@ -10001,12 +10055,13 @@
 
                     c(f);
                     var n = r[tXAD(884)] || r[tXAD(852)];
-                    s[slBm(730)] = n[slBm(67)];
+                    s[slBm(730)] = 882622;  //n[slBm(67)];
 
                     try {
                         var i = r[slBm(464)];
                         s[tXAD(795)] = i[slBm(67)];
-                    } catch (g) {}
+                    } catch (g) {
+                    }
 
                     s[tXAD(777)] = f[slBm(777)] || f[slBm(170)];
                     s[slBm(742)] = p[slBm(387)] || p[tXAD(385)];
@@ -10056,56 +10111,57 @@
                     s[tXAD(878)] = new Date()[slBm(882)]() / 60;
 
                     s[slBm(850)] = function () {
-                        var xAjF = AXzPo.DVn,
-                            wjYPbP = ["BGfef"].concat(xAjF),
-                            yUUQ = wjYPbP[1];
-                        wjYPbP.shift();
-                        var AJkI = wjYPbP[0];
-                        var e = f[yUUQ(124)](xAjF(194));
-                        var t = e[yUUQ(126)] && e[xAjF(126)](yUUQ(104));
-
-                        if (t) {
-                            var r = [];
-                            e[yUUQ(465)] = 2000;
-                            e[xAjF(451)] = 200;
-                            e[xAjF(123)][xAjF(881)] = xAjF(831);
-                            t[xAjF(816)](0, 0, 11, 11);
-                            t[yUUQ(816)](3, 3, 6, 6);
-                            r[xAjF(31)](yUUQ(819) + (t[yUUQ(830)](5, 5, xAjF(845)) === false ? xAjF(826) : xAjF(827)));
-                            t[xAjF(876)] = yUUQ(822);
-                            t[yUUQ(804)] = yUUQ(849);
-                            t[xAjF(815)](125, 1, 62, 20);
-                            t[yUUQ(804)] = xAjF(813);
-                            t[yUUQ(879)] = yUUQ(889);
-                            t[xAjF(801)](yUUQ(846), 2, 15);
-                            t[xAjF(804)] = xAjF(888);
-                            t[yUUQ(879)] = yUUQ(856);
-                            t[yUUQ(801)](yUUQ(846), 4, 45);
-                            t[xAjF(865)] = yUUQ(868);
-                            t[xAjF(804)] = xAjF(812);
-                            t[xAjF(824)]();
-                            t[yUUQ(811)](52, 50, 50, 0, Math[xAjF(805)] * 2, true);
-                            t[xAjF(897)]();
-                            t[yUUQ(892)]();
-                            t[yUUQ(804)] = xAjF(823);
-                            t[xAjF(824)]();
-                            t[yUUQ(811)](100, 50, 50, 0, Math[yUUQ(805)] * 2, true);
-                            t[yUUQ(897)]();
-                            t[xAjF(892)]();
-                            t[xAjF(804)] = yUUQ(841);
-                            t[xAjF(824)]();
-                            t[yUUQ(811)](75, 100, 50, 0, Math[xAjF(805)] * 2, true);
-                            t[yUUQ(897)]();
-                            t[xAjF(892)]();
-                            t[xAjF(804)] = xAjF(812);
-                            t[xAjF(811)](75, 75, 75, 0, Math[yUUQ(805)] * 2, true);
-                            t[yUUQ(811)](75, 75, 25, 0, Math[xAjF(805)] * 2, true);
-                            t[yUUQ(892)](xAjF(845));
-                            r[xAjF(31)](xAjF(835) + e[yUUQ(808)]());
-                            return Z(r[yUUQ(328)](yUUQ(864)));
-                        } else {
-                            return h[yUUQ(767)];
-                        }
+                        return 'ec7c335bf74657c936dd67ab696b3d97';
+                        // var xAjF = AXzPo.DVn,
+                        //     wjYPbP = ["BGfef"].concat(xAjF),
+                        //     yUUQ = wjYPbP[1];
+                        // wjYPbP.shift();
+                        // var AJkI = wjYPbP[0];
+                        // var e = f[yUUQ(124)](xAjF(194));
+                        // var t = e[yUUQ(126)] && e[xAjF(126)](yUUQ(104));
+                        //
+                        // if (t) {
+                        //     var r = [];
+                        //     e[yUUQ(465)] = 2000;
+                        //     e[xAjF(451)] = 200;
+                        //     e[xAjF(123)][xAjF(881)] = xAjF(831);
+                        //     t[xAjF(816)](0, 0, 11, 11);
+                        //     t[yUUQ(816)](3, 3, 6, 6);
+                        //     r[xAjF(31)](yUUQ(819) + (t[yUUQ(830)](5, 5, xAjF(845)) === false ? xAjF(826) : xAjF(827)));
+                        //     t[xAjF(876)] = yUUQ(822);
+                        //     t[yUUQ(804)] = yUUQ(849);
+                        //     t[xAjF(815)](125, 1, 62, 20);
+                        //     t[yUUQ(804)] = xAjF(813);
+                        //     t[yUUQ(879)] = yUUQ(889);
+                        //     t[xAjF(801)](yUUQ(846), 2, 15);
+                        //     t[xAjF(804)] = xAjF(888);
+                        //     t[yUUQ(879)] = yUUQ(856);
+                        //     t[yUUQ(801)](yUUQ(846), 4, 45);
+                        //     t[xAjF(865)] = yUUQ(868);
+                        //     t[xAjF(804)] = xAjF(812);
+                        //     t[xAjF(824)]();
+                        //     t[yUUQ(811)](52, 50, 50, 0, Math[xAjF(805)] * 2, true);
+                        //     t[xAjF(897)]();
+                        //     t[yUUQ(892)]();
+                        //     t[yUUQ(804)] = xAjF(823);
+                        //     t[xAjF(824)]();
+                        //     t[yUUQ(811)](100, 50, 50, 0, Math[yUUQ(805)] * 2, true);
+                        //     t[yUUQ(897)]();
+                        //     t[xAjF(892)]();
+                        //     t[xAjF(804)] = yUUQ(841);
+                        //     t[xAjF(824)]();
+                        //     t[yUUQ(811)](75, 100, 50, 0, Math[xAjF(805)] * 2, true);
+                        //     t[yUUQ(897)]();
+                        //     t[xAjF(892)]();
+                        //     t[xAjF(804)] = xAjF(812);
+                        //     t[xAjF(811)](75, 75, 75, 0, Math[yUUQ(805)] * 2, true);
+                        //     t[yUUQ(811)](75, 75, 25, 0, Math[xAjF(805)] * 2, true);
+                        //     t[yUUQ(892)](xAjF(845));
+                        //     r[xAjF(31)](xAjF(835) + e[yUUQ(808)]());
+                            // return Z(r[yUUQ(328)](yUUQ(864)));
+                        // } else {
+                        //     return h[yUUQ(767)];
+                        // }
                     }();
 
                     s[slBm(807)] = function () {
@@ -10121,156 +10177,11 @@
                             }
 
                             var e = f[EEPw(124)](DXLq(194));
-                            var t = e[EEPw(126)] && (e[DXLq(126)](DXLq(829)) || e[EEPw(126)](EEPw(665)));
+                            var t = e[EEPw(126)] && (e[DXLq(126)](DXLq(829)) || e[EEPw(126)](EEPw(665))) || 1;
 
                             if (t) {
-                                function r(e) {
-                                    var jUE = AXzPo.Ecs()[10][14];
-
-                                    for (; jUE !== AXzPo.Ecs()[8][9];) {
-                                        switch (jUE) {
-                                            case AXzPo.Ecs()[6][14]:
-                                                t[EEPw(890)](0, 0, 0, 1);
-                                                jUE = AXzPo.Ecs()[4][13];
-                                                break;
-
-                                            case AXzPo.Ecs()[12][13]:
-                                                t[DXLq(877)](t[DXLq(896)]);
-                                                jUE = AXzPo.Ecs()[10][12];
-                                                break;
-
-                                            case AXzPo.Ecs()[10][12]:
-                                                t[DXLq(870)](t[DXLq(844)]);
-                                                jUE = AXzPo.Ecs()[8][11];
-                                                break;
-
-                                            case AXzPo.Ecs()[2][11]:
-                                                t[DXLq(320)](t[DXLq(872)] | t[EEPw(858)]);
-                                                jUE = AXzPo.Ecs()[4][10];
-                                                break;
-
-                                            case AXzPo.Ecs()[12][10]:
-                                                return EEPw(530) + e[0] + EEPw(817) + e[1] + DXLq(500);
-                                                break;
-                                        }
-                                    }
-                                }
-
-                                function n(e) {
-                                    var kDx = AXzPo.Ecs()[10][14];
-
-                                    for (; kDx !== AXzPo.Ecs()[8][13];) {
-                                        switch (kDx) {
-                                            case AXzPo.Ecs()[4][14]:
-                                                var t,
-                                                    r = e[DXLq(632)](EEPw(874)) || e[DXLq(632)](DXLq(847)) || e[DXLq(632)](EEPw(820));
-                                                return r ? (t = e[DXLq(656)](r[DXLq(883)]), 0 === t && (t = 2), t) : null;
-                                                break;
-                                        }
-                                    }
-                                }
-
-                                var i = [];
-                                var a = EEPw(821);
-                                var o = DXLq(839);
-                                var s = t[DXLq(869)]();
-                                t[DXLq(885)](t[EEPw(848)], s);
-                                var c = new Float32Array([-0.2, -0.9, 0, 0.4, -0.26, 0, 0, 0.732134444, 0]);
-                                t[EEPw(802)](t[EEPw(848)], c, t[DXLq(800)]);
-                                s[EEPw(898)] = 3;
-                                s[EEPw(887)] = 3;
-
-                                var _ = t[EEPw(863)](),
-                                    l = t[DXLq(837)](t[DXLq(843)]);
-
-                                t[EEPw(855)](l, a);
-                                t[EEPw(842)](l);
-                                var u = t[DXLq(837)](t[DXLq(860)]);
-                                t[DXLq(855)](u, o);
-                                t[DXLq(842)](u);
-                                t[DXLq(838)](_, l);
-                                t[EEPw(838)](_, u);
-                                t[DXLq(891)](_);
-                                t[DXLq(873)](_);
-                                _[DXLq(875)] = t[DXLq(899)](_, EEPw(833));
-                                _[DXLq(880)] = t[DXLq(862)](_, EEPw(947));
-                                t[EEPw(986)](_[DXLq(944)]);
-                                t[DXLq(987)](_[DXLq(875)], s[DXLq(898)], t[DXLq(921)], false, 0, 0);
-                                t[EEPw(962)](_[DXLq(880)], 1, 1);
-                                t[DXLq(982)](t[DXLq(979)], 0, s[DXLq(887)]);
-
-                                if (t[EEPw(194)] != null) {
-                                    i[EEPw(31)](t[DXLq(194)][EEPw(808)]());
-                                }
-
-                                i[DXLq(31)](EEPw(941) + t[DXLq(949)]()[EEPw(328)](DXLq(908)));
-                                i[EEPw(31)](EEPw(978) + r(t[DXLq(656)](t[DXLq(998)])));
-                                i[EEPw(31)](DXLq(975) + r(t[DXLq(656)](t[DXLq(939)])));
-                                i[EEPw(31)](EEPw(916) + t[EEPw(656)](t[DXLq(937)]));
-                                i[EEPw(31)](DXLq(996) + (t[DXLq(950)]()[DXLq(912)] ? EEPw(826) : DXLq(827)));
-                                i[DXLq(31)](DXLq(936) + t[EEPw(656)](t[EEPw(971)]));
-                                i[DXLq(31)](EEPw(901) + t[DXLq(656)](t[DXLq(995)]));
-                                i[DXLq(31)](EEPw(926) + t[DXLq(656)](t[EEPw(905)]));
-                                i[DXLq(31)](DXLq(959) + n(t));
-                                i[EEPw(31)](DXLq(934) + t[DXLq(656)](t[DXLq(963)]));
-                                i[EEPw(31)](DXLq(911) + t[EEPw(656)](t[DXLq(917)]));
-                                i[EEPw(31)](EEPw(919) + t[DXLq(656)](t[EEPw(961)]));
-                                i[DXLq(31)](DXLq(983) + t[DXLq(656)](t[EEPw(930)]));
-                                i[DXLq(31)](DXLq(999) + t[DXLq(656)](t[EEPw(900)]));
-                                i[EEPw(31)](DXLq(904) + t[DXLq(656)](t[DXLq(960)]));
-                                i[EEPw(31)](EEPw(948) + t[DXLq(656)](t[EEPw(994)]));
-                                i[EEPw(31)](EEPw(991) + t[DXLq(656)](t[EEPw(902)]));
-                                i[DXLq(31)](EEPw(956) + t[EEPw(656)](t[EEPw(980)]));
-                                i[DXLq(31)](EEPw(952) + t[DXLq(656)](t[DXLq(942)]));
-                                i[DXLq(31)](DXLq(988) + r(t[EEPw(656)](t[EEPw(972)])));
-                                i[EEPw(31)](EEPw(968) + t[DXLq(656)](t[DXLq(984)]));
-                                i[DXLq(31)](EEPw(923) + t[EEPw(656)](t[EEPw(616)]));
-                                i[EEPw(31)](DXLq(928) + t[DXLq(656)](t[DXLq(945)]));
-                                i[DXLq(31)](EEPw(976) + t[EEPw(656)](t[EEPw(909)]));
-                                i[DXLq(31)](EEPw(957) + t[EEPw(656)](t[EEPw(609)]));
-                                i[DXLq(31)](DXLq(955) + t[EEPw(656)](t[DXLq(924)]));
-
-                                if (!t[DXLq(964)]) {
-                                    return Z(i[EEPw(328)](EEPw(864)));
-                                }
-
-                                i[EEPw(31)](DXLq(973) + t[DXLq(964)](t[DXLq(843)], t[EEPw(910)])[EEPw(907)]);
-                                i[DXLq(31)](DXLq(922) + t[DXLq(964)](t[DXLq(843)], t[DXLq(910)])[EEPw(929)]);
-                                i[DXLq(31)](DXLq(914) + t[DXLq(964)](t[EEPw(843)], t[DXLq(910)])[EEPw(974)]);
-                                i[DXLq(31)](EEPw(933) + t[EEPw(964)](t[DXLq(843)], t[EEPw(943)])[DXLq(907)]);
-                                i[EEPw(31)](EEPw(977) + t[DXLq(964)](t[EEPw(843)], t[EEPw(943)])[EEPw(929)]);
-                                i[EEPw(31)](EEPw(985) + t[DXLq(964)](t[DXLq(843)], t[EEPw(943)])[EEPw(974)]);
-                                i[EEPw(31)](DXLq(958) + t[EEPw(964)](t[EEPw(843)], t[EEPw(970)])[EEPw(907)]);
-                                i[EEPw(31)](EEPw(967) + t[EEPw(964)](t[DXLq(843)], t[EEPw(970)])[EEPw(929)]);
-                                i[DXLq(31)](EEPw(954) + t[EEPw(964)](t[EEPw(843)], t[DXLq(970)])[DXLq(974)]);
-                                i[DXLq(31)](EEPw(953) + t[DXLq(964)](t[DXLq(860)], t[EEPw(910)])[DXLq(907)]);
-                                i[EEPw(31)](DXLq(990) + t[DXLq(964)](t[EEPw(860)], t[DXLq(910)])[EEPw(929)]);
-                                i[DXLq(31)](DXLq(906) + t[EEPw(964)](t[DXLq(860)], t[DXLq(910)])[DXLq(974)]);
-                                i[DXLq(31)](DXLq(966) + t[DXLq(964)](t[DXLq(860)], t[EEPw(943)])[EEPw(907)]);
-                                i[DXLq(31)](DXLq(920) + t[EEPw(964)](t[EEPw(860)], t[DXLq(943)])[DXLq(929)]);
-                                i[EEPw(31)](EEPw(993) + t[EEPw(964)](t[EEPw(860)], t[DXLq(943)])[EEPw(974)]);
-                                i[DXLq(31)](EEPw(946) + t[EEPw(964)](t[DXLq(860)], t[DXLq(970)])[DXLq(907)]);
-                                i[DXLq(31)](DXLq(940) + t[EEPw(964)](t[DXLq(860)], t[EEPw(970)])[DXLq(929)]);
-                                i[DXLq(31)](EEPw(927) + t[EEPw(964)](t[EEPw(860)], t[EEPw(970)])[EEPw(974)]);
-                                i[DXLq(31)](EEPw(932) + t[DXLq(964)](t[EEPw(843)], t[DXLq(969)])[EEPw(907)]);
-                                i[EEPw(31)](EEPw(903) + t[DXLq(964)](t[EEPw(843)], t[DXLq(969)])[EEPw(929)]);
-                                i[EEPw(31)](DXLq(965) + t[EEPw(964)](t[EEPw(843)], t[DXLq(969)])[DXLq(974)]);
-                                i[EEPw(31)](EEPw(989) + t[EEPw(964)](t[DXLq(843)], t[EEPw(935)])[EEPw(907)]);
-                                i[DXLq(31)](EEPw(992) + t[DXLq(964)](t[DXLq(843)], t[EEPw(935)])[EEPw(929)]);
-                                i[DXLq(31)](EEPw(938) + t[EEPw(964)](t[EEPw(843)], t[EEPw(935)])[DXLq(974)]);
-                                i[DXLq(31)](DXLq(951) + t[DXLq(964)](t[EEPw(843)], t[DXLq(931)])[EEPw(907)]);
-                                i[EEPw(31)](EEPw(925) + t[EEPw(964)](t[EEPw(843)], t[EEPw(931)])[EEPw(929)]);
-                                i[DXLq(31)](EEPw(997) + t[DXLq(964)](t[EEPw(843)], t[EEPw(931)])[EEPw(974)]);
-                                i[EEPw(31)](DXLq(981) + t[EEPw(964)](t[DXLq(860)], t[DXLq(969)])[DXLq(907)]);
-                                i[EEPw(31)](DXLq(918) + t[EEPw(964)](t[DXLq(860)], t[EEPw(969)])[DXLq(929)]);
-                                i[EEPw(31)](EEPw(913) + t[DXLq(964)](t[DXLq(860)], t[DXLq(969)])[EEPw(974)]);
-                                i[DXLq(31)](DXLq(915) + t[EEPw(964)](t[DXLq(860)], t[DXLq(935)])[DXLq(907)]);
-                                i[DXLq(31)](EEPw(1097) + t[DXLq(964)](t[EEPw(860)], t[DXLq(935)])[DXLq(929)]);
-                                i[EEPw(31)](EEPw(1062) + t[EEPw(964)](t[DXLq(860)], t[EEPw(935)])[EEPw(974)]);
-                                i[EEPw(31)](EEPw(1008) + t[DXLq(964)](t[EEPw(860)], t[EEPw(931)])[EEPw(907)]);
-                                i[DXLq(31)](EEPw(1015) + t[EEPw(964)](t[DXLq(860)], t[EEPw(931)])[EEPw(929)]);
-                                i[DXLq(31)](EEPw(1024) + t[EEPw(964)](t[EEPw(860)], t[DXLq(931)])[EEPw(974)]);
-                                return Z(i[EEPw(328)](EEPw(864)));
+                                return 'f2d2e0dd416d822848daae7931504cd5';
+                                // return Z(i[EEPw(328)](EEPw(864)));
                             } else {
                                 return h[DXLq(767)];
                             }
@@ -10821,7 +10732,8 @@
                                     var wNG = AXzPo.Ecs()[4][14];
 
                                     for (; wNG !== AXzPo.Ecs()[10][14];) {
-                                        switch (wNG) {}
+                                        switch (wNG) {
+                                        }
                                     }
                                 }
 
@@ -12125,7 +12037,8 @@
                             });
                             i[bCYT(1269)](a);
                         }
-                    } catch (o) {}
+                    } catch (o) {
+                    }
                 },
                 "BRRC": function () {
                     var ldZl = AXzPo.DVn,
@@ -12731,7 +12644,8 @@
                 var FkO = AXzPo.Ecs()[4][14];
 
                 for (; FkO !== AXzPo.Ecs()[2][14];) {
-                    switch (FkO) {}
+                    switch (FkO) {
+                    }
                 }
             }
 
@@ -13226,7 +13140,8 @@
                             });
                         }
                     } else {
-                        if (g && r[FjFI(1425)]) {} else {
+                        if (g && r[FjFI(1425)]) {
+                        } else {
                             if (r[FjFI(1425)]) {
                                 t(FjFI(1415))[FjFI(128)]({
                                     "target": GowK(1403),
@@ -14556,7 +14471,8 @@
                                 }, 10);
                             }
                         } else {
-                            if (n = je) {}
+                            if (n = je) {
+                            }
                         }
 
                         t[SUQF(1210)](Pe);
@@ -14906,7 +14822,9 @@
             var ct = le();
 
             if (e) {
-                return yWcM;
+                var aa = new sOLg(e);
+                aa.Kpvo();
+                return aa;
             }
         });
     }();

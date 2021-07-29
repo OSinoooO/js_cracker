@@ -1,16 +1,19 @@
 import hashlib
 
 
-def _hash(val: str):
-    return hashlib.sha1(val.encode()).hexdigest()
+def _hash(val: str, hash_name: str):
+    """hash方法"""
+    hash_func = getattr(hashlib, hash_name)
+    return hash_func(val.encode()).hexdigest()
 
 
-def get_jsl_clearance(ct, bts, chars):
+def get_jsl_clearance(ct, bts, chars, hash_name):
+    """加速乐cookie加密逻辑"""
     chars_len = len(chars)
     for i in range(chars_len):
         for j in range(chars_len):
             jsl_clearance = bts[0] + chars[i] + chars[j] + bts[1]
-            if _hash(jsl_clearance) == ct:
+            if _hash(jsl_clearance, hash_name) == ct:
                 return jsl_clearance
 
 

@@ -594,6 +594,168 @@ function get_w_2(gt, challenge) {
             }
         }
     }
+    function hfAt(e) {
+        var Jpq = AXzPo.Ecs()[10][14];
+        for (; Jpq !== AXzPo.Ecs()[0][13]; ) {
+            switch (Jpq) {
+                case AXzPo.Ecs()[6][14]:
+                    this[lrii(389)] = e || [];
+                    Jpq = AXzPo.Ecs()[6][13];
+                    break;
+            }
+        }
+    }
+    hfAt[lrii(216)] = {
+        "\u0066\u0049\u006c\u0057": function(e) {
+            var XMwG = AXzPo.DVn
+                , WNuR_B = ['aUBqE'].concat(XMwG)
+                , YlrW = WNuR_B[1];
+            WNuR_B.shift();
+            var ZGAh = WNuR_B[0];
+            return this[YlrW(389)][e];
+        },
+        "\u004b\u006a\u0075\u004d": function() {
+            var cAKG = AXzPo.DVn
+                , bsYQNj = ['fdBuc'].concat(cAKG)
+                , dXE_ = bsYQNj[1];
+            bsYQNj.shift();
+            var eVhg = bsYQNj[0];
+            return this[cAKG(389)][cAKG(67)];
+        },
+        "\u004c\u0043\u005f\u0063": function(e, t) {
+            var hDiq = AXzPo.DVn
+                , gMynzD = ['kjWJp'].concat(hDiq)
+                , ipmC = gMynzD[1];
+            gMynzD.shift();
+            var jHoW = gMynzD[0];
+            var r = this;
+            var n;
+            if (ne(t)) {
+                n = r[hDiq(389)][hDiq(151)](e, t);
+            } else {
+                n = r[hDiq(389)][hDiq(151)](e);
+            }
+            return new hfAt(n);
+        },
+        "\u004d\u0046\u0052\u006e": function(e) {
+            var mwmL = AXzPo.DVn
+                , lV_Dvn = ['pMUOr'].concat(mwmL)
+                , nseG = lV_Dvn[1];
+            lV_Dvn.shift();
+            var oYok = lV_Dvn[0];
+            var t = this;
+            t[nseG(389)][nseG(31)](e);
+            return t;
+        },
+        "\u004e\u0067\u005f\u006e": function(e, t) {
+            var rCPW = AXzPo.DVn
+                , qiFWyK = ['ulitv'].concat(rCPW)
+                , sAzI = qiFWyK[1];
+            qiFWyK.shift();
+            var tYJR = qiFWyK[0];
+            return this[rCPW(389)][rCPW(359)](e, t || 1);
+        },
+        "\u004f\u0078\u0048\u0071": function(e) {
+            var wRQI = AXzPo.DVn
+                , vCcDet = ['AVDwn'].concat(wRQI)
+                , xZzs = vCcDet[1];
+            vCcDet.shift();
+            var ywNT = vCcDet[0];
+            return this[xZzs(389)][wRQI(328)](e);
+        },
+        "\u0050\u006e\u0052\u004a": function(e) {
+            var CBbr = AXzPo.DVn
+                , BnIX_r = ['FuBUN'].concat(CBbr)
+                , DEBl = BnIX_r[1];
+            BnIX_r.shift();
+            var EPGJ = BnIX_r[0];
+            var t = this[CBbr(389)][CBbr(386)](e);
+            return new hfAt(t);
+        },
+        "\u0051\u0071\u004e\u0059": function(e) {
+            var HOtl = AXzPo.DVn
+                , GBCIWt = ['KCEGB'].concat(HOtl)
+                , IOrQ = GBCIWt[1];
+            GBCIWt.shift();
+            var JcmY = GBCIWt[0];
+            var t = this;
+            var r = t[IOrQ(389)];
+            if (r[HOtl(384)]) {
+                return new hfAt(r[HOtl(384)](e));
+            }
+            var n = [];
+            for (var i = 0, a = r[IOrQ(67)]; i < a; i = i + 1) {
+                n[i] = e(r[i], i, t);
+            }
+            return new hfAt(n);
+        },
+        "\u0052\u0041\u006c\u004b": function(e) {
+            var MpeG = AXzPo.DVn
+                , LqRnal = ['PGEeZ'].concat(MpeG)
+                , NKDN = LqRnal[1];
+            LqRnal.shift();
+            var OYdB = LqRnal[0];
+            var t = this;
+            var r = t[MpeG(389)];
+            if (r[MpeG(344)]) {
+                return new hfAt(r[NKDN(344)](e));
+            }
+            var n = [];
+            for (var i = 0, a = r[NKDN(67)]; i < a; i = i + 1) {
+                if (e(r[i], i, t)) {
+                    n[MpeG(31)](r[i]);
+                }
+            }
+            return new hfAt(n);
+        },
+        "\u0053\u0044\u0071\u005a": function(e) {
+            var RSwB = AXzPo.DVn
+                , QauwqR = ['UXISI'].concat(RSwB)
+                , SvCh = QauwqR[1];
+            QauwqR.shift();
+            var TOue = QauwqR[0];
+            var t = this;
+            var r = t[SvCh(389)];
+            if (!r[RSwB(76)]) {
+                for (var n = 0, i = r[RSwB(67)]; n < i; n = n + 1) {
+                    if (r[n] === e) {
+                        return n;
+                    }
+                }
+                return -1;
+            }
+            return r[SvCh(76)](e);
+        },
+        "\u0054\u0076\u0068\u0069": function(e) {
+            var WEXm = AXzPo.DVn
+                , VAhnps = ['Zm_BL'].concat(WEXm)
+                , Xcyf = VAhnps[1];
+            VAhnps.shift();
+            var YPYR = VAhnps[0];
+            var t = this;
+            var r = t[Xcyf(389)];
+            if (!r[WEXm(407)]) {
+                var n = arguments[1];
+                for (var i = 0; i < r[WEXm(67)]; i++) {
+                    if (i in r) {
+                        e[WEXm(336)](n, r[i], i, t);
+                    }
+                }
+            }
+            return r[Xcyf(407)](e);
+        }
+    };
+    hfAt[kO_a(392)] = function(e) {
+        var bkAN = AXzPo.DVn
+            , aAdYeZ = ['exkkb'].concat(bkAN)
+            , cdmZ = aAdYeZ[1];
+        aAdYeZ.shift();
+        var dkZx = aAdYeZ[0];
+        if (Array[cdmZ(438)]) {
+            return Array[cdmZ(438)](e);
+        }
+        return Object[cdmZ(216)][bkAN(250)][bkAN(336)](e) === bkAN(405);
+    };
     function ptfl() {
         var hqs = AXzPo.Ecs()[12][14];
 
@@ -1042,7 +1204,7 @@ function get_w_2(gt, challenge) {
         }();
 
         s[slBm(893)] = p[tXAD(893)];
-        s[slBm(851)] = v || m || d ? [slBm(1078), tXAD(1065), tXAD(1056)][slBm(328)](slBm(529)) : function () {
+        s[slBm(851)] = v || m || false ? [slBm(1078), tXAD(1065), tXAD(1056)][slBm(328)](slBm(529)) : function () {
             var cQWK = AXzPo.DVn,
                 buKJrx = ["fIvRx"].concat(cQWK),
                 djJZ = buKJrx[1];

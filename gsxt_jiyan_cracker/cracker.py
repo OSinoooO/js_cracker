@@ -43,8 +43,8 @@ class SliderCracker:
             return self.get_gt_and_challenge()
         if resp.status_code == 521 and resp.text.startswith('<script>var'):
             go = eval(re.search(r';go\(({.*?})\)', resp.text, re.S).group(1))
-            jsl_clearance = get_jsl_clearance(go['ct'], go['bts'], go['chars'])
-            self.session.cookies.set('__jsl_clearance', jsl_clearance)
+            jsl_clearance = get_jsl_clearance(go['ct'], go['bts'], go['chars'], go['ha'])
+            self.session.cookies.set(go['tn'], jsl_clearance)
             return self.get_gt_and_challenge()
         if resp.status_code == 200:
             result = resp.json()
