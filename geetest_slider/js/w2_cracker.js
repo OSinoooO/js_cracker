@@ -26,7 +26,7 @@ window["navigator"] = {
 window['screen'] = {
     colorDepth: 24
 };
-const now = new Date().getTime()
+const now = new Date().getTime();
 window['performance'] = {
     timing: {
         "connectStart": now,
@@ -1401,8 +1401,7 @@ hfAt["GGYj"] = function(e) {
     }
 
     return Object["prototype"]["toString"]["call"](e) === "[object Array]";
-}
-;
+};
 
 function jYwQ(e) {
     if (typeof e == "string") {
