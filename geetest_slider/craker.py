@@ -35,16 +35,16 @@ class SliderCracker:
 
     def get_w_1(self, gt, challenge):
         """获取w加密参数"""
-        with open('fullpage.9.0.7.js', encoding='utf-8') as f:
+        with open('data/fullpage.9.0.7.js', encoding='utf-8') as f:
             return execjs.compile(f.read()).call('get_w', gt, challenge)
 
     def crack(self):
         """破解流程"""
         gt, challenge = self.get_gt_and_challenge()
         logger.info(f'注册成功：gt -> {gt}, challenge -> {challenge}')
-        w = self.get_w_1(gt, challenge)
-        logger.info(f'获取加密参数：w -> {w}')
-        self.check_captcha_type(gt, challenge, w)
+        # w = self.get_w_1(gt, challenge)
+        # logger.info(f'获取加密参数：w -> {w}')
+        # self.check_captcha_type(gt, challenge, w)
 
 
 if __name__ == '__main__':
