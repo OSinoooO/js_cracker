@@ -2877,7 +2877,7 @@ sOLg["prototype"] = {
             "client_type": t["cclR"],
             "w": a + n
         };
-        return o;
+        return [a + n, t["ylBh"]()];
         // return q(r, u["UgRL"]("fFtZ0VaY4Gg"), o)["BBgB"](function(e) {
         //     if (e["status"] === ze) {
         //         return J(Y(e, t, "/get.php"));
@@ -3262,7 +3262,7 @@ sOLg["prototype"] = {
 
 const Config = {
     "gt": "011e260466268eeb81114b4cc8e8a133",
-    "challenge": "a8cb15fc3a86391a0f42014586bfe835",
+    "challenge": "ec92a449931f32734a1ae5e9c548ed8b",
     "offline": false,
     "new_captcha": true,
     "product": "bind",
@@ -3314,5 +3314,16 @@ Config.__proto__ = {
     }
 };
 
-const result = new sOLg(Config)['VktP']();
-console.log(result);
+
+function get_w1(gt, challenge) {
+    Config['gt'] = gt;
+    Config['challenge'] = challenge;
+    return new sOLg(Config)['VktP']();
+}
+
+
+test_gt = '011e260466268eeb81114b4cc8e8a133'
+test_challenge = 'ec92a449931f32734a1ae5e9c548ed8b'
+const result = get_w1(test_gt, test_challenge)
+console.log(result[0]);  // w1
+console.log(result[1]);  // aes_key

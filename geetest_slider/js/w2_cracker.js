@@ -2591,7 +2591,7 @@ UhwE["prototype"] = {
 
 const Config = {
     "gt": "011e260466268eeb81114b4cc8e8a133",
-    "challenge": "fa18599852ffe16067a78b7d22e0b8a4",
+    "challenge": "ec92a449931f32734a1ae5e9c548ed8b",
     "offline": false,
     "new_captcha": true,
     "product": "bind",
@@ -2644,7 +2644,7 @@ Config.__proto__ = {
 };
 
 // 获取加密的w参数
-function get_w() {
+function get_w2(gt, challenge, config_s, aes_key) {
     var r = {};
     r["enMq"] = new hUUu();
     const start_time = window['performance']['timing']['loadEventEnd'] + 20;
@@ -2653,9 +2653,11 @@ function get_w() {
     var t = r["enMq"]["kdvq"]();
     var n = '883132magic data982447magic dataCSS1Compatmagic data75magic data-1magic data-1magic data-1magic data-1magic data-1magic data-1magic data-1magic data1magic data21magic data5magic data-1magic data12magic data-1magic data-1magic data-1magic data-1magic data-1magic data-1magic data-1magic data-1magic data566magic data15magic data-1magic data-1magic data-1magic data0magic data0magic data0magic data0magic data816magic data937magic data1920magic data1040magic datazh-CNmagic datazh-CN,zhmagic data-1magic data1magic data24magic dataMozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36magic data1magic data1magic data1920magic data1080magic data1920magic data1040magic data1magic data1magic data1magic data-1magic dataWin32magic data0magic data-8magic dataec7c335bf74657c936dd67ab696b3d97magic dataf2d2e0dd416d822848daae7931504cd5magic datainternal-pdf-viewer,mhjfbmdgcfjbbpaeojofohoefgiehjai,internal-nacl-pluginmagic data0magic data-1magic data0magic data4magic dataArial,ArialBlack,ArialNarrow,Calibri,Cambria,CambriaMath,ComicSansMS,Consolas,Courier,CourierNew,Georgia,Helvetica,Impact,LucidaConsole,LucidaSansUnicode,MicrosoftSansSerif,MSGothic,MSPGothic,MSSansSerif,MSSerif,PalatinoLinotype,SegoePrint,SegoeScript,SegoeUI,SegoeUILight,SegoeUISemibold,SegoeUISymbol,Tahoma,Times,TimesNewRoman,TrebuchetMS,Verdana,Wingdingsmagic data1629022149443magic data-1magic data-1magic data-1magic data362magic data38magic data4magic data4magic data29magic data-1magic data-1';
     var i = "INPUT_0";
+    Config['gt'] = gt;
+    Config['challenge'] = challenge;
     var a = new wDdk(Config);
     a['c'] = [12,58,98,36,43,95,62,15,12];
-    a["s"] = '725f7741';
+    a["s"] = config_s;
     var o = le() - ct + parseInt(Math.random() * (4000 - 3000 + 1) + 3000, 10);
     r["RpfL"] = "";
     r["STir"] = function() {
@@ -2731,8 +2733,14 @@ function get_w() {
 
         return t["hQhs"]["aeskey"];
     };
-    return uu["SBoX"](_["encrypt"](uHyn, r["ylBh"]()));
+    // return uu["SBoX"](_["encrypt"](uHyn, r["ylBh"]()));
+    return uu["SBoX"](_["encrypt"](uHyn, aes_key));
 }
 
-console.log(get_w());
+
+test_gt = '011e260466268eeb81114b4cc8e8a133';
+test_challenge = '4de3fc03f0e54920142c6a3af161730c';
+test_s = '76682d32';
+test_aes_key = 'bceb32bdd91400a2';
+console.log(get_w2(test_gt, test_challenge, test_s, test_aes_key));
 
