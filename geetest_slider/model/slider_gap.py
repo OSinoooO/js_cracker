@@ -3,11 +3,7 @@ from loguru import logger
 import os
 
 
-class SlideCrack(object):
-
-    def __init__(self, gap_img, bg):
-        self.gap_img = gap_img
-        self.bg = bg
+class SlideGap(object):
 
     @staticmethod
     def pixel_is_equal(image1, image2, x, y):
@@ -43,14 +39,14 @@ class SlideCrack(object):
                     return left
         return left
 
-    def run(self):
-        bg = Image.open(self.bg)
-        gap_img = Image.open(self.gap_img)
+    def crack(self, gap_img, bg):
+        bg = Image.open(bg)
+        gap_img = Image.open(gap_img)
         # 获取缺口的位置
         gap = self.get_gap(bg, gap_img)
         draw = ImageDraw.Draw(gap_img)
         draw.line((gap, 0, gap, gap_img.size[1]), fill=128)
-        img_dir = os.path.join(os.path.curdir, '../data/captcha_img')
+        img_dir = os.path.join(os.path.dirname(__file__), '../data/captcha_img')
         gap_img.save(os.path.join(img_dir, 'result.jpg'))
         logger.info(f'获取到图片缺口距离： gap -> {gap}')
         return gap
@@ -60,5 +56,5 @@ if __name__ == "__main__":
     img_dir = os.path.join(os.path.curdir, '../data/captcha_img')
     img1 = os.path.join(img_dir, 'bg.jpg')  # 带缺口的背景图
     img2 = os.path.join(img_dir, 'full.jpg')  # 不带缺口的背景图
-    gt = SlideCrack(img1, img2)
-    gt.run()
+    gt = SlideGap()
+    gt.crack(img1, img2)

@@ -3,6 +3,8 @@ import time
 import json
 import execjs
 from loguru import logger
+from model.re_captcha_img import ReCaptchaImg
+from model.slider_gap import SlideGap
 
 
 class SliderCracker:
@@ -12,7 +14,8 @@ class SliderCracker:
         self.register_url = 'https://www.geetest.com/api/user/register/register-sms'
         self.info_url = 'https://api.geetest.com/get.php'
         self.reset_info_url = 'https://api.geetest.com/refresh.php'
-        self.captcha_type_url = 'https://api.geetest.com/ajax.php'
+        self.verify_url = 'https://api.geetest.com/ajax.php'
+        self.img_base_url = 'https://static.geetest.com/'
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36',
         }
@@ -22,6 +25,11 @@ class SliderCracker:
             self.w1_compile = execjs.compile(f.read())
         with open('js/w2_cracker.js', encoding='utf-8') as f:
             self.w2_compile = execjs.compile(f.read())
+
+        self.captcha_bg_path = 'data/captcha_img/bg.jpg'
+        self.captcha_full_bg_path = 'data/captcha_img/full.jpg'
+        self.re_captcha = ReCaptchaImg()
+        self.slide_gap = SlideGap()
 
     def get_gt_and_challenge(self):
         """注册并获取gt值和challenge值"""
@@ -74,7 +82,7 @@ class SliderCracker:
             'client_type': 'web',
             'callback': callback,
         }
-        resp = requests.get(self.captcha_type_url, params=params, headers=self.headers, timeout=self.timeout)
+        resp = requests.get(self.verify_url, params=params, headers=self.headers, timeout=self.timeout)
         if not resp.text.startswith(f'{callback}('):
             raise RuntimeError(f'获取captcha-type失败： {resp.text}')
         return json.loads(resp.text[22:-1])
@@ -96,6 +104,14 @@ class SliderCracker:
             aes_key: 加密w1参数时的aesKey
         """
         return self.w2_compile.call('get_w2', gt, challenge, s, aes_key)
+
+    def download_captcha_img(self, url, save_path):
+        """下载验证码图片"""
+        resp = requests.get(url, headers=self.headers)
+        assert resp.status_code == 200, f'验证码图片下载失败： status [{resp.status_code}]'
+        with open(save_path, 'wb') as f:
+            f.write(resp.content)
+        logger.debug(f'图片下载完成 -> {save_path}')
 
     def crack(self):
         """破解流程"""
@@ -119,6 +135,19 @@ class SliderCracker:
             logger.info(f'成功获取验证码图片信息： captcha_info -> {captcha_info}')
         else:
             raise RuntimeError(f'获取到错误的验证码类型： {ret}')
+
+        # 第二步：验证码缺口识别
+        # 下载验证码图片
+        bg_url = self.img_base_url + captcha_info['bg']
+        full_bg_url = self.img_base_url + captcha_info['fullbg']
+        self.download_captcha_img(bg_url, self.captcha_bg_path)
+        self.download_captcha_img(full_bg_url, self.captcha_full_bg_path)
+
+        # 验证码图片还原
+        self.re_captcha.restore()
+
+        # 识别缺口
+        gap = self.slide_gap.crack(self.captcha_bg_path, self.captcha_full_bg_path)
 
 
 if __name__ == '__main__':

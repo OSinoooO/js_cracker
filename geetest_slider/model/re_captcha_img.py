@@ -29,9 +29,9 @@ class ReCaptchaImg:
 
     def restore(self):
         """图片还原"""
-        img_dir = os.path.join(os.path.curdir, '../data/captcha_img')
-        self._restore(self.read_img(os.path.join(img_dir, 'org_bg.webp')), os.path.join(img_dir, 'bg.jpg'))
-        self._restore(self.read_img(os.path.join(img_dir, 'org_full.webp')), os.path.join(img_dir, 'full.jpg'))
+        img_dir = os.path.join(os.path.curdir, 'data/captcha_img')
+        self._restore(self.read_img(os.path.join(img_dir, 'bg.jpg')), os.path.join(img_dir, 'bg.jpg'))
+        self._restore(self.read_img(os.path.join(img_dir, 'full.jpg')), os.path.join(img_dir, 'full.jpg'))
         logger.info('已完成验证码图片还原~')
 
 
