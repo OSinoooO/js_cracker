@@ -1,4 +1,5 @@
 import requests
+import os
 import time
 import json
 import execjs
@@ -26,8 +27,11 @@ class SliderCracker:
         with open('js/w2_cracker.js', encoding='utf-8') as f:
             self.w2_compile = execjs.compile(f.read())
 
-        self.captcha_bg_path = 'data/captcha_img/bg.jpg'
-        self.captcha_full_bg_path = 'data/captcha_img/full.jpg'
+        base_captcha_path = 'data/captcha_img'
+        if not os.path.exists(base_captcha_path):
+            os.makedirs(base_captcha_path)
+        self.captcha_bg_path = os.path.join(base_captcha_path, 'bg.jpg')
+        self.captcha_full_bg_path = os.path.join(base_captcha_path, 'full.jpg')
         self.re_captcha = ReCaptchaImg()
         self.slide_gap = SlideGap()
 
