@@ -7,6 +7,16 @@ import execjs
 from loguru import logger
 from model.re_captcha_img import ReCaptchaImg
 from model.slider_gap import SlideGap
+from decorator import decorator
+
+
+@decorator
+def timer(func, self,  *args, **kwargs):
+    start_time = time.time()
+    result = func(self)
+    end_time = time.time()
+    logger.debug(f'{func.__name__} 函数耗时 -> {end_time - start_time}')
+    return result
 
 
 class SliderCracker:
@@ -165,6 +175,7 @@ class SliderCracker:
             logger.debug(f'匹配到【{len(trajectory_list)}】条轨迹，随机选取一条')
             return random.choice(trajectory_list)
 
+    @timer
     def crack(self):
         """破解流程"""
         # 第一步：获取验证码图片信息
@@ -222,10 +233,10 @@ class SliderCracker:
 
         # 提交验证
         result = self.get_verify_result(gt, challenge, w3)
+        logger.info(f'验证结果 -> {result}')
         return result
 
 
 if __name__ == '__main__':
     c = SliderCracker()
     ret = c.crack()
-    print(ret)
