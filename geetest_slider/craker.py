@@ -11,9 +11,9 @@ from decorator import decorator
 
 
 @decorator
-def timer(func, self,  *args, **kwargs):
+def timer(func, *args, **kwargs):
     start_time = time.time()
-    result = func(self)
+    result = func(args[0])
     end_time = time.time()
     logger.debug(f'{func.__name__} 函数耗时 -> {end_time - start_time}')
     return result
