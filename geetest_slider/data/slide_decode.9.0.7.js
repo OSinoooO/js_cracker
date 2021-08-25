@@ -1,3 +1,4 @@
+window.aaa = [];
 (function () {
   AHkMb.Beu = function () {
     var RID = 2;
@@ -6946,6 +6947,7 @@
             r["JPiA"]["lyrX"]([Math["round"](u), Math["round"](_), r["MVjA"]]);
             var c = parseInt(u);
             var f = r["JPiA"]["nStF"](r["JPiA"]["SOQd"](), r["uRsI"]["c"], r["uRsI"]["s"]);
+            window.aaa.push(r["JPiA"].wHVU);
             n["ntwj"](c, f, r["MVjA"]);
             r["gvsP"]["ecgX"]();
           } catch (e) {

@@ -27,9 +27,9 @@ class ReCaptchaImg:
             new_img.paste(l, (int(_ % 26 * 10), int(s if _ > 25 else 0)))
         new_img.save(save_path)
 
-    def restore(self):
+    def restore(self, dir_path='data/captcha_img'):
         """图片还原"""
-        img_dir = os.path.join(os.path.curdir, 'data/captcha_img')
+        img_dir = os.path.join(os.path.curdir, dir_path)
         self._restore(self.read_img(os.path.join(img_dir, 'bg.jpg')), os.path.join(img_dir, 'bg.jpg'))
         self._restore(self.read_img(os.path.join(img_dir, 'full.jpg')), os.path.join(img_dir, 'full.jpg'))
         logger.info('已完成验证码图片还原~')
@@ -37,4 +37,4 @@ class ReCaptchaImg:
 
 if __name__ == '__main__':
     r = ReCaptchaImg()
-    r.restore()
+    r.restore('../data/captcha_img')
