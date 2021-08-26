@@ -18,7 +18,7 @@ class SlideGap(object):
         # 取两个图片的像素点
         pixel1 = image1.load()[x, y]
         pixel2 = image2.load()[x, y]
-        threshold = 60  # 像素色差
+        threshold = 100  # 像素色差
         if abs(pixel1[0]-pixel2[0]) < threshold and abs(pixel1[1]-pixel2[1]) < threshold and abs(pixel1[2]-pixel2[2]) <threshold:
             return True
         else:
