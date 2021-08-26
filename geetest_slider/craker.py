@@ -1,3 +1,6 @@
+# Author: osin
+# Date: 2021/8/25
+# Descp: 代码仅供学习研究，严禁商业用途！
 import random
 import requests
 import os
@@ -57,7 +60,7 @@ class SliderCracker:
         """加载轨迹库"""
         with open('data/trajectory.txt', encoding='utf-8') as f:
             trajectory_db = [eval(i.rstrip()) for i in f]
-            print(f'成功加载轨迹库，当前共【{len(trajectory_db)}】条轨迹（。＾▽＾）')
+            logger.debug(f'成功加载轨迹库，当前共【{len(trajectory_db)}】条轨迹（。＾▽＾）')
             return trajectory_db
 
     def get_gt_and_challenge(self):
