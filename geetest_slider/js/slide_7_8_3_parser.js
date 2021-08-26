@@ -261,7 +261,7 @@ const visitor = {
 
 //将源代码解析为AST
 process.argv.length > 2 ? encodeFile = process.argv[2] : encodeFile = "../data/slide.7.8.3.js";
-process.argv.length > 3 ? decodeFile = process.argv[3] : decodeFile = "../data/slide_decode.9.0.7.js";
+process.argv.length > 3 ? decodeFile = process.argv[3] : decodeFile = "../data/slide_decode.7.8.3.js";
 
 let sourceCode = fs.readFileSync(encodeFile, {encoding: "utf-8"});
 let ast = parser.parse(sourceCode);
