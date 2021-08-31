@@ -211,3 +211,96 @@ ok，拿到了第二个w参数之后，我们带上它请求一下ajax.php接口
 
 ### 第二步：识别验证码图片缺口距离
 
+#### 验证码图片还原
+
+将两张验证码背景图片（带缺口和不带缺口）下载到本地之后，可以看到它们大概长这个样子的：
+
+![img1](data/doc/img1.webp)
+
+可以看到图片是被打乱了的，需要进一步还原
+
+<br>
+
+
+
+图片的还原逻辑在`slide.7.8.3.js`里，混淆还原就不说了吧，第一部分里面有。关键逻辑我们可以通过追堆栈找到（这是下下策），想要快速定位的话，推荐hook或者搜索关键字，看看两种方式：
+
+- hook：
+
+  由于某验验证码是用canvas绘图的（F12查看验证码元素可以看出），那么我们就可以hook创建canvas对象的地方，直接百度上抄一个：
+
+  ```js
+  // hook canvas
+  (function() {
+      'use strict';
+      let create_element = document.createElement.bind(document);
+  
+      document.createElement = function (_element) {
+          console.log("create_element:",_element);
+          if (_element === "canvas") {
+              debugger;
+          }
+          return create_element(_element);
+      }
+  })();
+  ```
+
+  ![flow13](data/doc/flow13.png)
+
+能直接断到，右边往下追一个堆栈，就能找到图片还原逻辑：
+
+![flow14](data/doc/flow14.png)
+
+- 搜索关键字
+
+  因为canvas还原图片的操作需要用到两个函数`getImageData`（裁剪）和`putImageData`（粘贴），直接搜索这两关键字也行：
+
+  ![flow15](data/doc/flow15.png)
+
+<br>
+
+这里逻辑还是很清晰的，但如果扣js的话相对来说要麻烦一些，还要依赖第三方`canvas`库，不如直接用python复写逻辑（用到了`PIL`库）：
+
+![code3](data/doc/code3.png)
+
+<br>
+
+#### 缺口距离识别
+
+现在我们手上有了两张还原好的验证码背景图片，类似下图：
+
+![img2](data/doc/img2.png)
+
+![img2](data/doc/img3.png)
+
+识别验证码缺口的主要逻辑就是通过对比两张图片的像素差，从左往右对比，在遇到像素差值过大时，就认为这里就是缺口最左边的位置。这里直接推荐个项目：
+[https://github.com/crazyxw/SlideCrack](https://github.com/crazyxw/SlideCrack)
+
+<br>
+
+需要注意的是这里的像素差阈值，原项目里使用的阈值是60：
+
+![flow16](data/doc/flow16.png)
+
+但由于某验图片里会包含一些干扰阴影（从上面两张验证码图片也可以看出来），这个值需要调整。实测阈值改为80以上就识别效果就已经很好了（我个人用的100，别问，问就是我乐意(╯^╰)）
+
+<br>
+
+接着就能计算出缺口距离，为了方便检测效果，我加了一条线来判断：
+
+![img5](data/doc/img5.png)
+
+好了，这部分就结束了。。。
+
+<br>
+
+<br>
+
+才怪。
+
+到后面会发现我们识别出来的缺口距离匹配出的轨迹还是过不了验证，是因为：
+
+![flow17](data/doc/flow17.png)
+
+滑块是有一小段初始距离的！用个笨方法——PS量一下，不到6个像素点，那就算作6吧。所以缺口距离最后还得减个6才能去匹配滑动轨迹
+
