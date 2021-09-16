@@ -1,5 +1,5 @@
 import os
-
+from loguru import logger
 import requests
 import random
 import urllib.parse
@@ -13,9 +13,11 @@ class Cracker:
         self.img_config_url = 'https://api.zt.kuaishou.com/rest/zt/captcha/sliding/config'
         self.img_reset_url = 'https://api.zt.kuaishou.com/rest/zt/captcha/refSes'
         self.verify_url = 'https://api.zt.kuaishou.com/rest/zt/captcha/sliding/verify'
+        self.base_info_url = 'https://www.kuaishou.com/graphql'
 
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36',
+            # 'Cookie': 'clientid=3; did=web_963208ddb71e45fdbdd6f2008f1e658d'
         }
         self.req_timeout = 10  # 请求超时时间
 
@@ -24,22 +26,28 @@ class Cracker:
         self.aes_iv = 'hs2s8eop6pn6cf89'
         self.encrypter = Encrypt(key=self.aes_key, iv=self.aes_iv)
 
-        self.scale_ratio = 0.60932944606414  # 验证码缩放比例
-        self.slide_init_x = 10.358600583090379  # 滑块起始横坐标（17 * self.scale_ratio）
-        self.cut_slide_ratio = 0.358  # 滑块x坐标与轨迹总长度的比例
+        self.scale_ratio = 0.478134110787172  # 验证码缩放比例
+        self.slide_init_x = 8.128279883381923  # 滑块起始横坐标（17 * self.scale_ratio）
+        self.cut_slide_ratio = 0.28  # 滑块x坐标与轨迹总长度的比例
+        self.trajectory_path = 'data/trajectory.txt'
         self.trajectory_db = self.load_trajectory_db()  # 轨迹库
-        self.x_threshold = 3  # 缺口距离浮动阈值
+        self.x_threshold = 2  # 缺口距离浮动阈值
 
         self.cut_img_path = "img/cutPic.png"  # 滑块图片路径
         self.bg_img_path = "img/bgPic.png"  # 背景图片路径
         self.ret_img_path = "img/result.png"  # 处理结果图片路径,用红线标注
 
-    @staticmethod
-    def load_trajectory_db():
+    def get_did(self):
+        """获取cookie值did"""
+        resp = requests.get(self.base_info_url, headers=self.headers, timeout=10)
+        logger.info(f'获取新的did值 -> {resp.cookies.get("did")}')
+        return resp.cookies.get('did')
+
+    def load_trajectory_db(self):
         """加载轨迹库"""
-        with open('data/trajectory.txt', encoding='utf-8') as f:
+        with open(self.trajectory_path, encoding='utf-8') as f:
             trajectory_db = [i.rstrip() for i in f]
-            print(f'成功加载轨迹库，当前共【{len(trajectory_db)}】条轨迹（。＾▽＾）')
+            logger.info(f'成功加载轨迹库，当前共【{len(trajectory_db)}】条轨迹（。＾▽＾）')
             return trajectory_db
 
     def _request(self, url, captcha_session):
@@ -55,16 +63,16 @@ class Cracker:
         """获取验证码图片配置信息"""
         result = self._request(self.img_config_url, captcha_session)
         if result.get('result') == 1:
-            print(f'成功获取验证码图片配置信息：{result}')
+            logger.debug(f'成功获取验证码图片配置信息：{result}')
             return result
         else:
-            print(f'需要重置captchaSession：{result}')
+            logger.debug(f'需要重置captchaSession：{result}')
             captcha_session = self.reset_img(captcha_session)
             return self.get_img_config(captcha_session)
 
     def reset_img(self, captcha_session: str):
         """重置验证码"""
-        print(f'正在重置captchaSession...')
+        logger.debug(f'正在重置captchaSession...')
         result = self._request(self.img_reset_url, captcha_session)
         if result.get('result') == 1:
             return result['captchaSession']
@@ -79,12 +87,13 @@ class Cracker:
             "bgDisHeight": round(config['bgPicHeight'] * self.scale_ratio),
             "cutDisWidth": round(config['cutPicWidth'] * self.scale_ratio),
             "cutDisHeight": round(config['cutPicHeight'] * self.scale_ratio),
-            "relativeX": round(int(trajectory.split(',')[-1].split('-')[0]) * self.cut_slide_ratio + config[
-                'disX'] * self.scale_ratio),
+            "relativeX": round(int(trajectory.split(',')[-1].split('|')[0]) * self.cut_slide_ratio + config['disX'] * self.scale_ratio),
             "relativeY": round(config['disY'] * self.scale_ratio),
-            "trajectory": trajectory  # 滑块轨迹
+            "trajectory": trajectory,  # 滑块轨迹
         }
-        return urllib.parse.urlencode(sign)
+        sign = urllib.parse.urlencode(sign)
+        sign += '&gpuInfo=%7B%22glRenderer%22%3A%22WebKit%20WebGL%22%2C%22glVendor%22%3A%22WebKit%22%2C%22unmaskRenderer%22%3A%22ANGLE%20%28Intel%2C%20Mesa%20Intel%28R%29%20UHD%20Graphics%20630%20%28CFL%20GT2%29%2C%20OpenGL%204.6%20%28Core%20Profile%29%20Mesa%2020.3.4%29%22%2C%22unmaskVendor%22%3A%22Google%20Inc.%20%28Intel%29%22%7D'
+        return sign
 
     def verify(self, data):
         """验证逻辑"""
@@ -94,10 +103,10 @@ class Cracker:
         assert resp.status_code == 200, f'验证服务异常：{resp.status_code}'
         result = resp.json()
         if result.get('result') == 1:
-            print('* 验证通过！O(∩_∩)O')
+            logger.info('* 验证通过！O(∩_∩)O')
             return result
         else:
-            print('* 验证失败！/(ㄒoㄒ)/~~')
+            logger.warning('* 验证失败！/(ㄒoㄒ)/~~')
 
     def encrypt(self, data):
         """加密逻辑，AES-CBC"""
@@ -122,7 +131,7 @@ class Cracker:
         # 下载滑块图
         with open(self.cut_img_path, 'wb') as f:
             f.write(_downloader(cut_img_url))
-        print(f'验证码图片下载完成 -> {self.bg_img_path} {self.cut_img_path}')
+        logger.debug(f'验证码图片下载完成 -> {self.bg_img_path} {self.cut_img_path}')
 
     def get_gap_distance(self):
         """获取缺口距离"""
@@ -134,20 +143,21 @@ class Cracker:
         选择滑动轨迹
         :param x: 缺口距离
         """
-        # 使缺口距离适配当前环境（686为验证码原图宽度，418为实际验证码宽度，1000为滑块滑动最大长度）
-        trajectory_x = round((x / 686 * 418 - self.slide_init_x) / self.cut_slide_ratio)
+        # 使缺口距离适配当前环境
+        trajectory_x = round((x - 17) / 0.593)
 
         trajectory_list = []
         for trajectory in self.trajectory_db:
-            if trajectory_x - self.x_threshold < int(trajectory[:3]) < trajectory_x + self.x_threshold:
-                trajectory_list.append(trajectory[4:])
+            if trajectory_x - self.x_threshold < int(trajectory.split('-')[0]) < trajectory_x + self.x_threshold:
+                trajectory_list.append(trajectory.split('-')[1])
         if trajectory_list:
-            print(f'匹配到【{len(trajectory_list)}】条轨迹，随机选取一条')
+            logger.debug(f'匹配到【{len(trajectory_list)}】条轨迹，随机选取一条')
             return random.choice(trajectory_list)
         else:
-            print(f'未匹配到响应轨迹，请补充轨迹库... x - {x}')
+            logger.debug(f'未匹配到相应轨迹，请补充轨迹库... x - {x}')
 
     def crack(self, captcha_session):
+        self.headers['Cookie'] = 'clientid=3; did=' + self.get_did()
         # 获取验证码图片信息
         img_config = self.get_img_config(captcha_session)
         # 下载验证码
