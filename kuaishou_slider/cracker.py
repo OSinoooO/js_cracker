@@ -1,4 +1,5 @@
 import os
+import re
 from loguru import logger
 import requests
 import random
@@ -14,6 +15,7 @@ class Cracker:
         self.img_reset_url = 'https://api.zt.kuaishou.com/rest/zt/captcha/refSes'
         self.verify_url = 'https://api.zt.kuaishou.com/rest/zt/captcha/sliding/verify'
         self.base_info_url = 'https://www.kuaishou.com/graphql'
+        self.data_url = 'https://www.kuaishou.com/graphql'
 
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36',
@@ -70,6 +72,22 @@ class Cracker:
             captcha_session = self.reset_img(captcha_session)
             return self.get_img_config(captcha_session)
 
+    def get_captcha_session(self):
+        """获取captchaSession"""
+        data = {"operationName":"visionSearchPhoto","variables":{"keyword":"你","pcursor":"1","page":"search","searchSessionId":"MTRfMF8xNjM0NjE0ODEzMTY4X-S9oF8zMzAx"},"query":"query visionSearchPhoto($keyword: String, $pcursor: String, $searchSessionId: String, $page: String, $webPageArea: String) {  visionSearchPhoto(keyword: $keyword, pcursor: $pcursor, searchSessionId: $searchSessionId, page: $page, webPageArea: $webPageArea) {    result    llsid    webPageArea    feeds {      type      author {        id        name        following        headerUrl        headerUrls {          cdn          url          __typename        }        __typename      }      tags {        type        name        __typename      }      photo {        id        duration        caption        likeCount        realLikeCount        coverUrl        photoUrl        liked        timestamp        expTag        coverUrls {          cdn          url          __typename        }        photoUrls {          cdn          url          __typename        }        animatedCoverUrl        stereoType        videoRatio        __typename      }      canAddComment      currentPcursor      llsid      status      __typename    }    searchSessionId    pcursor    aladdinBanner {      imgUrl      link      __typename    }    __typename  }}"}
+        headers = self.headers
+        headers['Referer'] = 'https://www.kuaishou.com/search/video?searchKey=%E4%BD%A0'
+        resp = requests.post(self.data_url, json=data, headers=self.headers, timeout=self.req_timeout)
+        assert resp.status_code == 200
+        result = re.search(r'captchaSession=(.*?)&', resp.text)
+        if result:
+            result = result.group(1)
+            logger.debug(f'成功获取captchaSession：{result}')
+            return result
+        else:
+            logger.error(f'未获取captchaSession：{result}')
+            raise ValueError(f'未获取captchaSession：{result}')
+
     def reset_img(self, captcha_session: str):
         """重置验证码"""
         logger.debug(f'正在重置captchaSession...')
@@ -103,7 +121,7 @@ class Cracker:
         assert resp.status_code == 200, f'验证服务异常：{resp.status_code}'
         result = resp.json()
         if result.get('result') == 1:
-            logger.info('* 验证通过！O(∩_∩)O')
+            logger.success('* 验证通过！O(∩_∩)O')
             return result
         else:
             logger.warning('* 验证失败！/(ㄒoㄒ)/~~')
@@ -156,8 +174,10 @@ class Cracker:
         else:
             logger.debug(f'未匹配到相应轨迹，请补充轨迹库... x - {x}')
 
-    def crack(self, captcha_session):
+    def crack(self):
         self.headers['Cookie'] = 'clientid=3; did=' + self.get_did()
+        # 获取captcha_session
+        captcha_session = self.get_captcha_session()
         # 获取验证码图片信息
         img_config = self.get_img_config(captcha_session)
         # 下载验证码
@@ -177,9 +197,8 @@ class Cracker:
 
 if __name__ == '__main__':
     cracker = Cracker()
-    captcha_session = 'Cgp6dC5jYXB0Y2hhEu4BhrFlzKlXo5uDBVpHWUSqCJyBWg7rlip036LEQ_1LC3pkKqfQorAOOhI-tDZRckgDIykZYVJuzBz0PYyRRw9yXjs1YJ3ZaDwrTN_QaIXpFZrW-cEPbHMTAx5HyQG0wAWR2UQtcMlLCvO3suwEEJNRtw23XKJGBaJKC8KbNQWw79fijbl2RGlM79Q86Es9f6cZj3BViRs1duk9kUaq-uiCI1G8ZzScbSHj-9jwFtcMmCWGmQCht45eZiG1g436lYxSgLwMC4B8jLNYaaduQVkpvbT8AvbggjOZ9uxgwoicrS9lkaJKUCOS1CP7aqhnGRoSHzu-JyybXJ56fSg-i-K_agFkKAUwAg'
-    result = cracker.crack(captcha_session)
-    print(f'验证结果，拿好咯：{result}')
+    result = cracker.crack()
+    logger.info(f'验证结果，拿好咯：{result}')
     # 带上请求头去请求，只请求一次，然后丢掉该请求头
     # identity-verification-token = result['captchaToken']
     # identity-verification-type = result['unifiedType']
