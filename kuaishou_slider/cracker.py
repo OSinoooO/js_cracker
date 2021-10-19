@@ -15,7 +15,6 @@ class Cracker:
         self.img_reset_url = 'https://api.zt.kuaishou.com/rest/zt/captcha/refSes'
         self.verify_url = 'https://api.zt.kuaishou.com/rest/zt/captcha/sliding/verify'
         self.base_info_url = 'https://www.kuaishou.com/graphql'
-        self.data_url = 'https://www.kuaishou.com/graphql'
 
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36',
@@ -77,7 +76,7 @@ class Cracker:
         data = {"operationName":"visionSearchPhoto","variables":{"keyword":"你","pcursor":"1","page":"search","searchSessionId":"MTRfMF8xNjM0NjE0ODEzMTY4X-S9oF8zMzAx"},"query":"query visionSearchPhoto($keyword: String, $pcursor: String, $searchSessionId: String, $page: String, $webPageArea: String) {  visionSearchPhoto(keyword: $keyword, pcursor: $pcursor, searchSessionId: $searchSessionId, page: $page, webPageArea: $webPageArea) {    result    llsid    webPageArea    feeds {      type      author {        id        name        following        headerUrl        headerUrls {          cdn          url          __typename        }        __typename      }      tags {        type        name        __typename      }      photo {        id        duration        caption        likeCount        realLikeCount        coverUrl        photoUrl        liked        timestamp        expTag        coverUrls {          cdn          url          __typename        }        photoUrls {          cdn          url          __typename        }        animatedCoverUrl        stereoType        videoRatio        __typename      }      canAddComment      currentPcursor      llsid      status      __typename    }    searchSessionId    pcursor    aladdinBanner {      imgUrl      link      __typename    }    __typename  }}"}
         headers = self.headers
         headers['Referer'] = 'https://www.kuaishou.com/search/video?searchKey=%E4%BD%A0'
-        resp = requests.post(self.data_url, json=data, headers=self.headers, timeout=self.req_timeout)
+        resp = requests.post(self.base_info_url, json=data, headers=self.headers, timeout=self.req_timeout)
         assert resp.status_code == 200
         result = re.search(r'captchaSession=(.*?)&', resp.text)
         if result:
