@@ -109,10 +109,11 @@ class SDK:
         # 执行动态js获取cookie
         cookies, params = self.eval_code(js_code_1, ts_gen_code)
         cookies = {i.split('=')[0]: i.split('=')[1]for i in cookies.split('; ')}
+        print(f'生成cookies -> {cookies}')
         self.check_cookies(params, cookies, page=page)
         return cookies
 
 
 if __name__ == '__main__':
     sdk = SDK()
-    sdk.crack(page)
+    sdk.crack(1)
