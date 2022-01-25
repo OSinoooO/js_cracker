@@ -34,7 +34,7 @@ def get_track(distance):
 
 
 with sync_playwright() as p:
-    browser = p.chromium.launch(headless=True)
+    browser = p.chromium.launch(headless=False)
     context = browser.new_context()
     context.set_default_navigation_timeout(10 * 1000)
     context.set_default_timeout(10 * 1000)
@@ -84,4 +84,3 @@ with sync_playwright() as p:
     cookies = {c['name']: c['value'] for c in context.cookies()}
     print(f"验证成功 -> {cookies}")
     browser.close()
-
