@@ -6,6 +6,7 @@ import random
 import urllib.parse
 from encrypt import Encrypt
 from slide_gap import SlideCrack
+import json
 
 
 class Cracker:
@@ -110,6 +111,44 @@ class Cracker:
         }
         sign = urllib.parse.urlencode(sign)
         sign += '&gpuInfo=%7B%22glRenderer%22%3A%22WebKit%20WebGL%22%2C%22glVendor%22%3A%22WebKit%22%2C%22unmaskRenderer%22%3A%22ANGLE%20%28Intel%2C%20Mesa%20Intel%28R%29%20UHD%20Graphics%20630%20%28CFL%20GT2%29%2C%20OpenGL%204.6%20%28Core%20Profile%29%20Mesa%2020.3.4%29%22%2C%22unmaskVendor%22%3A%22Google%20Inc.%20%28Intel%29%22%7D'
+        sign += '&captchaExtraParam=' + urllib.parse.quote_plus(json.dumps(
+            {
+                "ua": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36",
+                "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36",
+                "timeZone": "UTC+8",
+                "language": "zh-CN",
+                "cpuCoreCnt": "12",
+                "platform": "Linux x86_64",
+                "riskBrowser": "false",
+                "webDriver": "false",
+                "exactRiskBrowser": "false",
+                "webDriverDeep": "false",
+                "exactRiskBrowser2": "false",
+                "webDriverDeep2": "false",
+                "battery": "1",
+                "plugins": "1a68ba429dd293b14e41a28b6535aa590",
+                "resolution": "1920x1080",
+                "pixelDepth": "24",
+                "colorDepth": "24",
+                "canvasGraphFingerPrint": "105cfd80a894b674d0d59f0b26e28ed73",
+                "canvasGraph": "105cfd80a894b674d0d59f0b26e28ed73",
+                "canvasTextFingerPrintEn": "1e19fbedaaa2f9475898383d4d0a26e33",
+                "canvasTextEn": "1e19fbedaaa2f9475898383d4d0a26e33",
+                "canvasTextFingerPrintZh": "1bbfe4d6611d7d2ffc7744834b97884fa",
+                "canvasTextZh": "1bbfe4d6611d7d2ffc7744834b97884fa",
+                "webglGraphFingerPrint": "14dc51ccd006f78c818999c374ac62402",
+                "webglGraph": "14dc51ccd006f78c818999c374ac62402",
+                "webglGPUFingerPrint": "186c99f4a6103b3a7bd5318db2fad2479",
+                "webglGpu": "186c99f4a6103b3a7bd5318db2fad2479",
+                "cssFontFingerPrintEn": "1eca0d153a3ffbc167d77a8b7eee0602e",
+                "fontListEn": "1eca0d153a3ffbc167d77a8b7eee0602e",
+                "cssFontFingerPrintZh": "12458c4e79f66c410dab21e945db43b02",
+                "fontListZh": "12458c4e79f66c410dab21e945db43b02",
+                "voiceFingerPrint": "1dd96cac4e826abdbbe261dc4f3a08292",
+                "audioTriangle": "1dd96cac4e826abdbbe261dc4f3a08292",
+                "nativeFunc": "1973dcbb27a04c3a2ee240d9d2549e105"
+            }, ensure_ascii=False
+        )).replace('+', '%20')
         return sign
 
     def verify(self, data):
