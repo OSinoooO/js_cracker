@@ -1,12 +1,22 @@
 import os
+import time
+import json
 import re
-from loguru import logger
 import requests
 import random
 import urllib.parse
+from loguru import logger
 from encrypt import Encrypt
 from slide_gap import SlideCrack
-import json
+from retrying import retry
+from functools import lru_cache
+
+
+class VerifyError(Exception):
+    """ Unspecified verify error. """
+
+    def __init__(self, *args, **kwargs):
+        pass
 
 
 class Cracker:
@@ -18,9 +28,23 @@ class Cracker:
         self.base_info_url = 'https://www.kuaishou.com/graphql'
 
         self.headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36',
-            # 'Cookie': 'clientid=3; did=web_963208ddb71e45fdbdd6f2008f1e658d'
+            "Connection": "keep-alive",
+            "Pragma": "no-cache",
+            "Cache-Control": "no-cache",
+            "sec-ch-ua": "\"Google Chrome\";v=\"95\", \"Chromium\";v=\"95\", \";Not A Brand\";v=\"99\"",
+            "accept-language": "zh-CN,zh;q=0.9,ru;q=0.8",
+            "sec-ch-ua-mobile": "?0",
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36",
+            "content-type": "application/json",
+            "accept": "*/*",
+            "sec-ch-ua-platform": "\"Linux\"",
+            "Origin": "https://www.kuaishou.com",
+            "Sec-Fetch-Site": "same-origin",
+            "Sec-Fetch-Mode": "cors",
+            "Sec-Fetch-Dest": "empty",
+            "Referer": "https://www.kuaishou.com/search/video?searchKey=%E4%BD%A0%E5%AF%B9%E7%88%B1"
         }
+        self.cookies = {}
         self.req_timeout = 10  # 请求超时时间
 
         # 加密器配置
@@ -39,9 +63,13 @@ class Cracker:
         self.bg_img_path = "img/bgPic.png"  # 背景图片路径
         self.ret_img_path = "img/result.png"  # 处理结果图片路径,用红线标注
 
-    def get_did(self):
+        self.max_verify_count = 5  # 最大验证次数
+
+    @lru_cache(maxsize=1)
+    def get_did(self, _):
         """获取cookie值did"""
-        resp = requests.get(self.base_info_url, headers=self.headers, timeout=10)
+        url = 'https://www.kuaishou.com/search/video?searchKey=%E4%BD%A0%E5%AF%B9%E7%88%B1'
+        resp = requests.get(url, headers=self.headers, timeout=10)
         logger.info(f'获取新的did值 -> {resp.cookies.get("did")}')
         return resp.cookies.get('did')
 
@@ -72,12 +100,60 @@ class Cracker:
             captcha_session = self.reset_img(captcha_session)
             return self.get_img_config(captcha_session)
 
+    def reset_captcha_session(self, captcha_session):
+        """重置captchaSession"""
+        headers = {
+            "Connection": "keep-alive",
+            "Pragma": "no-cache",
+            "Cache-Control": "no-cache",
+            "sec-ch-ua": "\"Google Chrome\";v=\"95\", \"Chromium\";v=\"95\", \";Not A Brand\";v=\"99\"",
+            "Accept": "application/json, text/plain, */*",
+            "Content-Type": "application/x-www-form-urlencoded",
+            "sec-ch-ua-mobile": "?0",
+            "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/95.0.4638.54 Safari/537.36",
+            "sec-ch-ua-platform": "\"Linux\"",
+            "Origin": "https://captcha.zt.kuaishou.com",
+            "Sec-Fetch-Site": "same-origin",
+            "Sec-Fetch-Mode": "cors",
+            "Sec-Fetch-Dest": "empty",
+            "Referer": f"https://captcha.zt.kuaishou.com/iframe/index.html?captchaSession={captcha_session}&type=1&configUrl=https%3A%2F%2Fcaptcha.zt.kuaishou.com%2Frest%2Fzt%2Fcaptcha%2Fsliding%2Fconfig",
+            "Accept-Language": "zh-CN,zh;q=0.9,ru;q=0.8"
+        }
+        cookies = {
+            "clientid": "3",
+            "did": self.cookies.get('did')
+        }
+        url = "https://captcha.zt.kuaishou.com/rest/zt/captcha/refSes"
+        data = {
+            "captchaSession": captcha_session
+        }
+        response = requests.post(url, headers=headers, cookies=cookies, data=data)
+        captcha_session = response.json().get('captchaSession')
+        assert captcha_session, 'captcha_session重置失败'
+        return captcha_session
+
+    @retry(stop_max_attempt_number=10)
     def get_captcha_session(self):
         """获取captchaSession"""
-        data = {"operationName":"visionSearchPhoto","variables":{"keyword":"你","pcursor":"1","page":"search","searchSessionId":"MTRfMF8xNjM0NjE0ODEzMTY4X-S9oF8zMzAx"},"query":"query visionSearchPhoto($keyword: String, $pcursor: String, $searchSessionId: String, $page: String, $webPageArea: String) {  visionSearchPhoto(keyword: $keyword, pcursor: $pcursor, searchSessionId: $searchSessionId, page: $page, webPageArea: $webPageArea) {    result    llsid    webPageArea    feeds {      type      author {        id        name        following        headerUrl        headerUrls {          cdn          url          __typename        }        __typename      }      tags {        type        name        __typename      }      photo {        id        duration        caption        likeCount        realLikeCount        coverUrl        photoUrl        liked        timestamp        expTag        coverUrls {          cdn          url          __typename        }        photoUrls {          cdn          url          __typename        }        animatedCoverUrl        stereoType        videoRatio        __typename      }      canAddComment      currentPcursor      llsid      status      __typename    }    searchSessionId    pcursor    aladdinBanner {      imgUrl      link      __typename    }    __typename  }}"}
-        headers = self.headers
-        headers['Referer'] = 'https://www.kuaishou.com/search/video?searchKey=%E4%BD%A0'
-        resp = requests.post(self.base_info_url, json=data, headers=self.headers, timeout=self.req_timeout)
+        cookies = {
+            "kpf": "PC_WEB",
+            "kpn": "KUAISHOU_VISION",
+            "clientid": "3",
+            "did": self.get_did(time.time() // 60)
+        }
+        self.cookies = cookies
+        url = 'https://www.kuaishou.com/search/video?searchKey=%E4%BD%A0%E5%AF%B9%E7%88%B1'
+        session = requests.Session()
+        session.get(url, headers=self.headers, cookies=cookies)
+
+        url = "https://www.kuaishou.com/graphql"
+        data = {
+            "operationName": "visionConfigQuery",
+            "variables": {},
+            "query": "query visionConfigQuery {\n  visionConfig {\n    coronaTabs {\n      tabId\n      name\n      folded\n      selected\n      __typename\n    }\n    tubeTabs {\n      tabId\n      name\n      folded\n      selected\n      subTabs {\n        subTabId\n        subTabName\n        __typename\n      }\n      __typename\n    }\n    banners {\n      id\n      landingUrl\n      imageUrl\n      __typename\n    }\n    movieTagTypes {\n      movieTagType\n      movieTagValues\n      __typename\n    }\n    disabledModules\n    __typename\n  }\n}\n"
+        }
+        data = json.dumps(data)
+        resp = session.post(url, headers=self.headers, cookies=cookies, data=data)
         assert resp.status_code == 200
         result = re.search(r'captchaSession=(.*?)&', resp.text)
         if result:
@@ -86,6 +162,7 @@ class Cracker:
             return result
         else:
             logger.error(f'未获取captchaSession：{result}')
+            time.sleep(0.5)
             raise ValueError(f'未获取captchaSession：{result}')
 
     def reset_img(self, captcha_session: str):
@@ -163,6 +240,7 @@ class Cracker:
             return result
         else:
             logger.warning('* 验证失败！/(ㄒoㄒ)/~~')
+            raise VerifyError('* 验证失败！/(ㄒoㄒ)/~~')
 
     def encrypt(self, data):
         """加密逻辑，AES-CBC"""
@@ -211,26 +289,35 @@ class Cracker:
             return random.choice(trajectory_list)
         else:
             logger.debug(f'未匹配到相应轨迹，请补充轨迹库... x - {x}')
+            raise VerifyError('未匹配到相应轨迹')
 
-    def crack(self):
-        self.headers['Cookie'] = 'clientid=3; did=' + self.get_did()
-        # 获取captcha_session
-        captcha_session = self.get_captcha_session()
+    def crack(self, captcha_session=None, _count=1):
+        if not captcha_session:
+            # 获取captcha_session
+            captcha_session = self.get_captcha_session()
         # 获取验证码图片信息
         img_config = self.get_img_config(captcha_session)
         # 下载验证码
         self.download_captcha_img(img_config['bgPicUrl'], img_config['cutPicUrl'], img_config['captchaSn'])
         # 获取验证码缺口距离
         gap_distance = self.get_gap_distance()
-        # 从轨迹库中选择相应轨迹
-        trajectory = self.choice_trajectory(int(gap_distance))
-        if trajectory:
-            # 拼接待加密的参数
-            sign = self.init_sign(img_config, trajectory)
-            # 获取加密参数
-            encrypt_sign = self.encrypt(sign)
-            # 验证
-            return self.verify(encrypt_sign)
+        try:
+            # 从轨迹库中选择相应轨迹
+            trajectory = self.choice_trajectory(int(gap_distance))
+            if trajectory:
+                # 拼接待加密的参数
+                sign = self.init_sign(img_config, trajectory)
+                # 获取加密参数
+                encrypt_sign = self.encrypt(sign)
+                # 验证
+                return self.verify(encrypt_sign)
+        except VerifyError:
+            _count += 1
+            if _count > self.max_verify_count:
+                logger.warning(f'达到最大验证次数')
+                return
+            captcha_session = self.reset_captcha_session(captcha_session)
+            return self.crack(captcha_session, _count)
 
 
 if __name__ == '__main__':
